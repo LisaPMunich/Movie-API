@@ -19,6 +19,7 @@
   "homepage": "https://github.com/LisaPMunich/Movie-API#readme",
   "dependencies": {
     "body-parser": "^1.19.2",
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "morgan": "^1.10.0"
   }
 }
