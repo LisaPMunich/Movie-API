@@ -4,7 +4,9 @@
   "description": "This API allows a user to receive information on movies, directors, and genres so that he   can learn more about movies he has watched or is interested in. &lt;br> Also he can create a profile, so he can save data about his favorite movies.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +22,12 @@
   "dependencies": {
     "body-parser": "^1.19.2",
     "express": "^4.17.3",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "swagger-jsdoc": "^5.0.1",
+    "swagger-ui-express": "^4.3.0"
   }
 }
