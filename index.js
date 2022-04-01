@@ -10,6 +10,7 @@ const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
         info: {
+            description: "This API allows a user to receive information on climate movies and directors so that he can learn more about movies he has watched or is interested in. Also he can create a profile, so he can save data about his favorite movies.",
             title: 'Express API for Movies and Users',
             version: '1.0.0',
         },
@@ -22,7 +23,7 @@ const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 app.use(bodyParser.json());
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/documentation.html', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 let users = [
     {
@@ -216,24 +217,21 @@ let movies = [
  *             schema:
  *               type: object
  *               properties:
- *                 data:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: integer
- *                       description: The user ID.
- *                       example: 0
- *                     name:
- *                       type: string
- *                       description: The new user's name.
- *                       example: Kim
- *                     favoriteMovies:
- *                       type: array
- *                       description: List of the user's favorite movies.
- *                       items:
- *                          type: string
- *                          description: Name of a favorite movie
- *                          example: Snowpiercer
+ *                 id:
+ *                   type: integer
+ *                   description: The user ID.
+ *                   example: 0
+ *                 name:
+ *                   type: string
+ *                   description: The new user's name.
+ *                   example: Kim
+ *                 favoriteMovies:
+ *                   type: array
+ *                   description: List of the user's favorite movies.
+ *                   items:
+ *                      type: string
+ *                      description: Name of a favorite movie
+ *                      example: Snowpiercer
  *       400:
  *         description: bad request, user has no name.
  */
