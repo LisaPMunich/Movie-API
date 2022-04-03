@@ -1,0 +1,329 @@
+openapi: 3.0.0
+info:
+  description: >-
+    This API allows a user to receive information on climate movies and
+    directors so that he can learn more about movies he has watched or is
+    interested in. Also he can create a profile, so he can save data about his
+    favorite movies.
+  title: Express API for Movies and Users
+  version: 1.0.0
+paths:
+  /users:
+    post:
+      summary: Create and add a new user.
+      tags:
+        - users
+      responses:
+        '201':
+          description: New user created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The user ID.
+                    example: 0
+                  name:
+                    type: string
+                    description: The new user's name.
+                    example: Kim
+                  favoriteMovies:
+                    type: array
+                    description: List of the user's favorite movies.
+                    items:
+                      type: string
+                      description: Name of a favorite movie
+                      example: Snowpiercer
+        '400':
+          description: bad request, user has no name.
+  /users/{id}/{movieTitle}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of user to fetch
+        required: true
+        schema:
+          type: integer
+      - name: movieTitle
+        in: path
+        description: title of movie to fetch
+        required: true
+        schema:
+          type: string
+    post:
+      summary: Add favorite movie by user ID.
+      tags:
+        - users
+
+      responses:
+        '201':
+          description: favorite movie created
+          content:
+            application/json:
+              schema:
+                type: string
+                example: snowpiercer has been added to array of user 1.
+        '400':
+          description: bad request, user does not exist.
+    delete:
+      summary: Remove favorite movie by user ID.
+      tags:
+        - users
+      responses:
+        '200':
+          description: favorite movie of selected user removed.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Snowpiercer has been removed from array of user 1.
+        '400':
+          description: bad request, there is no such user.
+  /movies:
+    get:
+      summary: Read and display all movies.
+      tags:
+        - movies
+      description: Retrieve a list of all movies from local variable
+      responses:
+        '200':
+          description: lists all movies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Title:
+                      type: string
+                      description: The title of the movie.
+                      example: WALL-E
+                    Description:
+                      type: string
+                      description: The plot of the movie.
+                    Genre:
+                      type: object
+                      properties:
+                        Name:
+                          type: string
+                          description: The genre of the movie.
+                          example: documentary.
+                        Description:
+                          type: string
+                          description: The definition of the genre.
+                    Director:
+                      type: object
+                      properties:
+                        Name:
+                          type: string
+                          description: The name of the director.
+                        Bio:
+                          type: string
+                          description: Biographic details about the director.
+                        Birth:
+                          type: integer
+                          description: The year of birth of the director.
+                        Death:
+                          type: integer
+                          description: The year of death of the director.
+                    ImageURL:
+                      type: string
+                      description: url of an image fitting the plot of the movie.
+                    Featured:
+                      type: boolean
+  /movies/{title}:
+    parameters:
+      - name: title
+        in: path
+        description: title of movie to fetch
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Read and display movie by title.
+      tags:
+        - movies
+      description: Retrieve a single movie from local variable title.
+      responses:
+        '200':
+          description: lists all movies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Title:
+                      type: string
+                      description: The title of the movie.
+                      example: WALL-E
+                    Description:
+                      type: string
+                      description: The plot of the movie.
+                    Genre:
+                      type: object
+                      properties:
+                        Name:
+                          type: string
+                          description: The genre of the movie.
+                          example: documentary.
+                        Description:
+                          type: string
+                          description: The definition of the genre.
+                    Director:
+                      type: object
+                      properties:
+                        Name:
+                          type: string
+                          description: The name of the director.
+                        Bio:
+                          type: string
+                          description: Biographic details about the director.
+                        Birth:
+                          type: integer
+                          description: The year of birth of the director.
+                        Death:
+                          type: integer
+                          description: The year of death of the director.
+                    ImageURL:
+                      type: string
+                      description: url of an image fitting the plot of the movie.
+                    Featured:
+                      type: boolean
+        '400':
+          description: bad request, movie was not found.
+  /movies/genre/{genreName}:
+    parameters:
+      - name: genreName
+        in: path
+        description: genre name of movie to fetch
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Read and display data about genre of movie by genreName.
+      tags:
+        - movies
+      description: >-
+        Retrieve information about the genre of a movie from local variable
+        genreName.
+      responses:
+        '200':
+          description: lists information about genre
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Name:
+                      type: string
+                      description: The genre of the movie.
+                      example: documentary
+                    Description:
+                      type: string
+                      description: The definition of the genre.
+        '400':
+          description: bad request, there is no such genre.
+  /movies/director/{directorName}:
+    parameters:
+      - name: directorName
+        in: path
+        description: director name of movie to fetch
+        required: true
+        schema:
+          type: string
+    get:
+      summary: Read and display data about director by directorName.
+      tags:
+        - movies
+      description: Retrieve a single director by local variable directorName
+      responses:
+        '200':
+          description: information about director of movie.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Name:
+                      type: string
+                      description: The name of the director.
+                    Bio:
+                      type: string
+                      description: Biographic details about the director.
+                    Birth:
+                      type: integer
+                      description: The year of birth of the director.
+                    Death:
+                      type: integer
+                      description: The year of death of the director.
+        '400':
+          description: bad request, director was not found.
+  /users/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of user to fetch
+        required: true
+        schema:
+          type: integer
+    put:
+      summary: Update username by user ID.
+      tags:
+        - users
+      responses:
+        '200':
+          description: username was updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: The user ID.
+                    example: 0
+                  name:
+                    type: string
+                    description: The user's name.
+                    example: Lisa
+                  favoriteMovies:
+                    type: array
+                    description: List of the user's favorite movies.
+                    items:
+                      type: string
+                      description: Name of a favorite movie
+                      example: Snowpiercer
+        '400':
+          description: user does not exist.
+    delete:
+      summary: Delete a single user.
+      tags:
+        - users
+      description: >-
+        Delete a single user. Can be used to depopulate a user profile when
+        prototyping or testing an API.
+      responses:
+        '200':
+          description: A single user.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: User 1 has been removed from array of users.
+        '400':
+          description: bad request, there is no such user.
+components: {}
+tags:
+  - name: users
+    description: all endpoints regarding users of movie
+  - name: movies
+    description: all endpoints regarding movies

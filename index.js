@@ -1,34 +1,23 @@
 const express = require('express');
-const app = express();
-const PORT = 8080;
-bodyParser = require('body-parser');
-uuid = require('uuid');
-
-// LOGGING
-morgan = require('morgan');
+const bodyParser = require('body-parser');
+const uuid = require('uuid');
+const morgan = require('morgan');
 let fs = require('fs');
 let path = require('path');
+const swaggerUi = require('swagger-ui-express');
+const YAML= require('yamljs');
+
+const app = express();
+const PORT = 8080;
+
+// LOGGING
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
 app.use(morgan('combined', {stream: accessLogStream}));
 
 
 // DOCUMENTATION
-const swaggerJSDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
-const swaggerOptions = {
-    swaggerDefinition: {
-        openapi: '3.0.0',
-        info: {
-            description: "This API allows a user to receive information on climate movies and directors so that he can learn more about movies he has watched or is interested in. Also he can create a profile, so he can save data about his favorite movies.",
-            title: 'Express API for Movies and Users',
-            version: '1.0.0',
-        },
-    },
-    // Paths to files containing OpenAPI definitions
-    apis: ['./*.js'],
-};
-const swaggerSpec = swaggerJSDoc(swaggerOptions);
-app.use('/documentation.html', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+const swaggerDocument = YAML.load('./swagger.yaml');
+app.use('/documentation.html', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // BODY PARSER
 app.use(bodyParser.json());
@@ -213,39 +202,6 @@ let movies = [
 
 // USER ENDPOINTS
 // CREATE - Create and add new user
-/**
- * @swagger
- * /users:
- *   post:
- *     summary: Create and add a new user.
- *     tags:
- *       - users
- *     responses:
- *       201:
- *         description: New user created
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   description: The user ID.
- *                   example: 0
- *                 name:
- *                   type: string
- *                   description: The new user's name.
- *                   example: Kim
- *                 favoriteMovies:
- *                   type: array
- *                   description: List of the user's favorite movies.
- *                   items:
- *                      type: string
- *                      description: Name of a favorite movie
- *                      example: Snowpiercer
- *       400:
- *         description: bad request, user has no name.
- */
 app.post('/users', (req, res) => {
     const newUser = req.body;
 
@@ -261,24 +217,6 @@ app.post('/users', (req, res) => {
 // CREATE AND DELETE ROUTES - Add and delete favorite movie by user ID
 app
     .route('/users/:id/:movieTitle')
-    /**
-     * @swagger
-     * /users/{id}/{movieTitle}:
-     *   post:
-     *     summary: Add favorite movie by user ID.
-     *     tags:
-     *       - users
-     *     responses:
-     *       201:
-     *         description: favorite movie created
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: string
-     *               example: snowpiercer has been added to array of user 1.
-     *       400:
-     *         description: bad request, user does not exist.
-     */
     .post((req, res) => {
         const id = Number(req.params.id);
         const {movieTitle} = req.params;
@@ -291,24 +229,6 @@ app
             res.status(400).send('no such user')
         }
     })
-    /**
-     * @swagger
-     * /users/{id}/{movieTitle}:
-     *   delete:
-     *     summary: Remove favorite movie by user ID.
-     *     tags:
-     *       - users
-     *     responses:
-     *       200:
-     *         description: favorite movie of selected user removed.
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: string
-     *               example: Snowpiercer has been removed from array of user 1.
-     *       400:
-     *         description: bad request, there is no such user.
-     */
     .delete((req, res) => {
         const id = Number(req.params.id);
         const {movieTitle} = req.params;
@@ -325,39 +245,6 @@ app
 // UPDATE AND DELETE ROUTES - Update and remove user by ID
 app
     .route('/users/:id')
-    /**
-     * @swagger
-     * /users/{id}:
-     *   put:
-     *     summary: Update username by user ID.
-     *     tags:
-     *       - users
-     *     responses:
-     *       200:
-     *         description: username was updated
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: object
-     *               properties:
-     *                 id:
-     *                   type: integer
-     *                   description: The user ID.
-     *                   example: 0
-     *                 name:
-     *                   type: string
-     *                   description: The user's name.
-     *                   example: Lisa
-     *                 favoriteMovies:
-     *                   type: array
-     *                   description: List of the user's favorite movies.
-     *                   items:
-     *                       type: string
-     *                       description: Name of a favorite movie
-     *                       example: Snowpiercer
-     *       400:
-     *         description: user does not exist.
-     */
     .put((req, res) => {
         const userId = Number(req.params.id);
         const updatedUser = req.body;
@@ -370,25 +257,6 @@ app
             res.status(400).send('no such user')
         }
     })
-    /**
-     * @swagger
-     * /users/{id}:
-     *   delete:
-     *     summary: Delete a single user.
-     *     tags:
-     *       - users
-     *     description: Delete a single user. Can be used to depopulate a user profile when prototyping or testing an API.
-     *     responses:
-     *       200:
-     *         description: A single user.
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: string
-     *               example: User 1 has been removed from array of users.
-     *       400:
-     *         description: bad request, there is no such user.
-     */
     .delete((req, res) => {
         const {id} = req.params;
         let user = users.find(user => user.id = id);
@@ -404,125 +272,11 @@ app
 
 // MOVIE ENDPOINTS
 // READ - Get list of all movies
-/**
- * @swagger
- *  /movies:
- *      get:
- *          summary: Read and display all movies.
- *          tags:
- *            - movies
- *          description: Retrieve a list of all movies from local variable
- *          responses:
- *              200:
- *                  description: lists all movies
- *                  content:
- *                      application/json:
- *                          schema:
- *                              type: array
- *                              items:
- *                                  type: object
- *                                  properties:
- *                                      Title:
- *                                          type: string
- *                                          description: The title of the movie.
- *                                          example: WALL-E
- *                                      Description:
- *                                          type: string
- *                                          description: The plot of the movie.
- *                                      Genre:
- *                                          type: object
- *                                          properties:
- *                                              Name:
- *                                                  type: string
- *                                                  description: The genre of the movie.
- *                                                  example: documentary.
- *                                              Description:
- *                                                  type: string
- *                                                  description: The definition of the genre.
- *                                      Director:
- *                                          type: object
- *                                          properties:
- *                                              Name:
- *                                                  type: string
- *                                                  description: The name of the director.
- *                                              Bio:
- *                                                  type: string
- *                                                  description: Biographic details about the director.
- *                                              Birth:
- *                                                  type: integer
- *                                                  description: The year of birth of the director.
- *                                              Death:
- *                                                  type: integer
- *                                                  description: The year of death of the director.
- *                                      ImageURL:
- *                                          type: string
- *                                          description: url of an image fitting the plot of the movie.
- *                                      Featured:
- *                                          type: boolean
- */
 app.get('/movies', (req, res) => {
     res.status(200).json(movies)
 });
 
 // READ - Get movie by title
-/**
- * @swagger
- *  /movies/{title}:
- *      get:
- *          summary: Read and display movie by title.
- *          tags:
- *            - movies
- *          description: Retrieve a single movie from local variable title.
- *          responses:
- *              200:
- *                  description: lists all movies
- *                  content:
- *                      application/json:
- *                          schema:
- *                              type: array
- *                              items:
- *                                  type: object
- *                                  properties:
- *                                      Title:
- *                                          type: string
- *                                          description: The title of the movie.
- *                                          example: WALL-E
- *                                      Description:
- *                                          type: string
- *                                          description: The plot of the movie.
- *                                      Genre:
- *                                          type: object
- *                                          properties:
- *                                              Name:
- *                                                  type: string
- *                                                  description: The genre of the movie.
- *                                                  example: documentary.
- *                                              Description:
- *                                                  type: string
- *                                                  description: The definition of the genre.
- *                                      Director:
- *                                          type: object
- *                                          properties:
- *                                              Name:
- *                                                  type: string
- *                                                  description: The name of the director.
- *                                              Bio:
- *                                                  type: string
- *                                                  description: Biographic details about the director.
- *                                              Birth:
- *                                                  type: integer
- *                                                  description: The year of birth of the director.
- *                                              Death:
- *                                                  type: integer
- *                                                  description: The year of death of the director.
- *                                      ImageURL:
- *                                          type: string
- *                                          description: url of an image fitting the plot of the movie.
- *                                      Featured:
- *                                          type: boolean
- *              400:
- *                description: bad request, movie was not found.
- */
 app.get('/movies/:title', (req, res) => {
     const {title} = req.params;
     const movie = movies.find(movie => movie.Title === title);
@@ -535,34 +289,6 @@ app.get('/movies/:title', (req, res) => {
 });
 
 // READ - Get data about genre by genreName
-/**
- * @swagger
- *  /movies/genre/{genreName}:
- *      get:
- *          summary: Read and display data about genre of movie by genreName.
- *          tags:
- *            - movies
- *          description: Retrieve information about the genre of a movie from local variable genreName.
- *          responses:
- *              200:
- *                  description: lists information about genre
- *                  content:
- *                      application/json:
- *                          schema:
- *                              type: array
- *                              items:
- *                                  type: object
- *                                  properties:
- *                                      Name:
- *                                          type: string
- *                                          description: The genre of the movie.
- *                                          example: documentary
- *                                      Description:
- *                                          type: string
- *                                          description: The definition of the genre.
- *              400:
- *                description: bad request, there is no such genre.
- */
 app.get('/movies/genre/:genreName', (req, res) => {
     const {genreName} = req.params;
     const foundMovie = movies.find(movie => movie.Genre.Name.toLowerCase() === genreName.toLowerCase());
@@ -575,39 +301,6 @@ app.get('/movies/genre/:genreName', (req, res) => {
 });
 
 // READ - Get data about director by directorName
-/**
- * @swagger
- *  /movies/director/{directorName}:
- *      get:
- *          summary: Read and display data about director by directorName.
- *          tags:
- *            - movies
- *          description: Retrieve a single director by local variable directorName
- *          responses:
- *              200:
- *                  description: information about director of movie.
- *                  content:
- *                      application/json:
- *                          schema:
- *                              type: array
- *                              items:
- *                                  type: object
- *                                  properties:
- *                                      Name:
- *                                          type: string
- *                                          description: The name of the director.
- *                                      Bio:
- *                                          type: string
- *                                          description: Biographic details about the director.
- *                                      Birth:
- *                                          type: integer
- *                                          description: The year of birth of the director.
- *                                      Death:
- *                                          type: integer
- *                                          description: The year of death of the director.
- *              400:
- *                description: bad request, director was not found.
- */
 app.get('/movies/director/:directorName', (req, res) => {
     const {directorName} = req.params;
     const foundMovie = movies.find(movie => movie.Director.Name.toLowerCase() === directorName.toLowerCase());
@@ -618,7 +311,6 @@ app.get('/movies/director/:directorName', (req, res) => {
         res.status(400).send('no such director')
     }
 });
-
 
 // LISTEN FOR REQUESTS
 app.listen(PORT, () => {

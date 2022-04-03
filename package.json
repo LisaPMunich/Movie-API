@@ -28,6 +28,7 @@
   "devDependencies": {
     "nodemon": "^2.0.15",
     "swagger-jsdoc": "^5.0.1",
-    "swagger-ui-express": "^4.3.0"
+    "swagger-ui-express": "^4.3.0",
+    "yamljs": "^0.3.0"
   }
 }
