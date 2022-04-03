@@ -1,11 +1,22 @@
 const express = require('express');
 const app = express();
+const PORT = 8080;
 bodyParser = require('body-parser');
 uuid = require('uuid');
+
+// LOGGING
 morgan = require('morgan');
+
+let fs = require('fs');
+let path = require('path');
+const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
+
+app.use(morgan('combined', {stream: accessLogStream}));
+
+
+// DOCUMENTATION
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-
 const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
@@ -18,13 +29,14 @@ const swaggerOptions = {
     // Paths to files containing OpenAPI definitions
     apis: ['./*.js'],
 };
-
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
+app.use('/documentation.html', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 app.use(bodyParser.json());
 
-app.use('/documentation.html', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+// DATA POOL
 let users = [
     {
         "id": 1,
@@ -201,6 +213,7 @@ let movies = [
     }
 ]
 
+// USER ENDPOINTS
 // CREATE - Create and add new user
 /**
  * @swagger
@@ -279,8 +292,119 @@ app.post('/users/:id/:movieTitle', (req, res)=>{
     }
 });
 
+// DELETE - Delete favorite movie by user ID
+/**
+ * @swagger
+ * /users/{id}/{movieTitle}:
+ *   delete:
+ *     summary: Remove favorite movie by user ID.
+ *     tags:
+ *       - users
+ *     responses:
+ *       200:
+ *         description: favorite movie of selected user removed.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               example: Snowpiercer has been removed from array of user 1.
+ *       400:
+ *         description: bad request, there is no such user.
+ */
+app.delete('/users/:id/:movieTitle', (req, res)=>{
+    const {id, movieTitle} = req.params;
+    let user = users.find(user=>user.id === id);
+
+    if (user){
+        user.favoriteMovies = user.favoriteMovies.filter(title =>title !== movieTitle);
+        res.status(200).send(`${movieTitle} has been removed from array of user ${id}`);
+    } else {
+        res.status(400).send('no such user')
+    }
+});
+
+// UPDATE - Update username by user ID
+/**
+ * @swagger
+ * /users/{id}:
+ *   put:
+ *     summary: Update username by user ID.
+ *     tags:
+ *       - users
+ *     responses:
+ *       200:
+ *         description: username was updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   description: The user ID.
+ *                   example: 0
+ *                 name:
+ *                   type: string
+ *                   description: The user's name.
+ *                   example: Lisa
+ *                 favoriteMovies:
+ *                   type: array
+ *                   description: List of the user's favorite movies.
+ *                   items:
+ *                       type: string
+ *                       description: Name of a favorite movie
+ *                       example: Snowpiercer
+ *       400:
+ *         description: user does not exist.
+ */
+app.put('/users/:id', (req, res)=>{
+    const id = Number(req.params.id);
+    const updatedUser = req.body;
+
+    let user = users.find(user =>user.id === id);
+    if (user){
+        user.name =updatedUser.name;
+        res.status(200).json(user);
+    } else {
+        res.status(400).send('no such user')
+    }
+});
+
+// DELETE - Remove user by ID
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Delete a single user.
+ *     tags:
+ *       - users
+ *     description: Delete a single user. Can be used to depopulate a user profile when prototyping or testing an API.
+ *     responses:
+ *       200:
+ *         description: A single user.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: string
+ *               example: User 1 has been removed from array of users.
+ *       400:
+ *         description: bad request, there is no such user.
+ */
+app.delete('/users/:id', (req, res)=>{
+    const {id} = req.params;
+    let user = users.find(user=>user.id = id);
+
+    if (user){
+        users = users.filter(user =>user.id !== id);
+        res.status(200).send(`user ${id} has been removed from list of users`);
+    } else {
+        res.status(400).send('no such user')
+    }
+});
 
 
+
+// MOVIE ENDPOINTS
 // READ - Get list of all movies
 /**
  * @swagger
@@ -496,119 +620,11 @@ app.get('/movies/director/:directorName', (req, res)=>{
         res.status(400).send('no such director')
     }
 });
-// UPDATE - Update username by user ID
-/**
- * @swagger
- * /users/{id}:
- *   put:
- *     summary: Update username by user ID.
- *     tags:
- *       - users
- *     responses:
- *       200:
- *         description: username was updated
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id:
- *                   type: integer
- *                   description: The user ID.
- *                   example: 0
- *                 name:
- *                   type: string
- *                   description: The user's name.
- *                   example: Lisa
- *                 favoriteMovies:
- *                   type: array
- *                   description: List of the user's favorite movies.
- *                   items:
- *                       type: string
- *                       description: Name of a favorite movie
- *                       example: Snowpiercer
- *       400:
- *         description: user does not exist.
- */
-app.put('/users/:id', (req, res)=>{
-    const id = Number(req.params.id);
-    const updatedUser = req.body;
 
-    let user = users.find(user =>user.id === id);
-    if (user){
-        user.name =updatedUser.name;
-        res.status(200).json(user);
-    } else {
-        res.status(400).send('no such user')
-    }
-});
-
-// DELETE - Delete favorite movie by user ID
-/**
- * @swagger
- * /users/{id}/{movieTitle}:
- *   delete:
- *     summary: Remove favorite movie by user ID.
- *     tags:
- *       - users
- *     responses:
- *       200:
- *         description: favorite movie of selected user removed.
- *         content:
- *           application/json:
- *             schema:
- *               type: string
- *               example: Snowpiercer has been removed from array of user 1.
- *       400:
- *         description: bad request, there is no such user.
- */
-app.delete('/users/:id/:movieTitle', (req, res)=>{
-    const {id, movieTitle} = req.params;
-    let user = users.find(user=>user.id === id);
-
-    if (user){
-        user.favoriteMovies = user.favoriteMovies.filter(title =>title !== movieTitle);
-        res.status(200).send(`${movieTitle} has been removed from array of user ${id}`);
-    } else {
-        res.status(400).send('no such user')
-    }
-});
-
-// DELETE - Remove user by ID
-/**
- * @swagger
- * /users/{id}:
- *   delete:
- *     summary: Delete a single user.
- *     tags:
- *       - users
- *     description: Delete a single user. Can be used to depopulate a user profile when prototyping or testing an API.
- *     responses:
- *       200:
- *         description: A single user.
- *         content:
- *           application/json:
- *             schema:
- *               type: string
- *               example: User 1 has been removed from array of users.
- *       400:
- *         description: bad request, there is no such user.
- */
-app.delete('/users/:id', (req, res)=>{
-    const {id} = req.params;
-    let user = users.find(user=>user.id = id);
-
-    if (user){
-        users = users.filter(user =>user.id !== id);
-        res.status(200).send(`user ${id} has been removed from list of users`);
-    } else {
-        res.status(400).send('no such user')
-    }
-});
 
 // LISTEN FOR REQUESTS
-app.listen(8080, () => {
-    console.log('Your app is listening on port 8080');
+app.listen(PORT, () => {
+    console.log(`The server is running on port ${PORT}!`)
 });
 
 
