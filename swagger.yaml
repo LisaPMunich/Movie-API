@@ -149,7 +149,7 @@ paths:
       description: Retrieve a single movie from local variable title.
       responses:
         '200':
-          description: lists all movies
+          description: lists selected movie
           content:
             application/json:
               schema:

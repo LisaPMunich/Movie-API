@@ -26,13 +26,18 @@ app.use(bodyParser.json());
 // DATA POOL
 let users = [
     {
-        "id": 1,
-        "name": "Lisa",
+        "id": 2,
+        "name": "lisapmunich",
         "favoriteMovies": ["Downsizing"]
     },
     {
-        "id": 2,
-        "name": "Alex",
+        "id": 3,
+        "name": "heino",
+        "favoriteMovies": ["Snowpiercer"]
+    },
+    {
+        "id": 4,
+        "name": "AlexP",
         "favoriteMovies": ["Snowpiercer"]
     }
 ]
@@ -132,7 +137,7 @@ let movies = [
             "Death": 0
         },
         "ImageURL": "https://i.picsum.photos/id/1032/200/300.jpg?hmac=QdMNx6kwGjGtQqK_jCFOZa06MImU1ePTGi3mpwLZmwo",
-        "Featured": false
+        "Featured": true
     },
     {
         "Title": "Snowpiercer",
@@ -180,7 +185,7 @@ let movies = [
             "Death": 0
         },
         "ImageURL": "https://i.picsum.photos/id/398/200/300.jpg?hmac=Hfi27DwRf-atKwN-O57cBXGhlUtMCe6rozr2rWH8xH8",
-        "Featured": false
+        "Featured": true
     },
     {
         "Title": "WALL-E",
@@ -193,6 +198,22 @@ let movies = [
             "Name": "Andrew Stanton",
             "Bio": "Andrew Ayers Stanton was born in Rockport, Massachusetts. He is an American animator, storyboard artist, film director, screenwriter, producer and voice actor based at Pixar. His film work includes co-writing and co-directing Pixar's A Bug's Life (1998), directing Finding Nemo (2003)[3] and the sequel Finding Dory (2016), WALL-E (2008), and the live-action film, Disney's John Carter (2012), and co-writing all four Toy Story films (1995–2019) and Monsters, Inc. (2001).",
             "Birth": 1965.0,
+            "Death": 0
+        },
+        "ImageURL": "https://i.picsum.photos/id/1002/200/300.jpg?hmac=QAnT71VGihaxEf_iyet9i7yb3JvYTzeojsx-djd3Aos",
+        "Featured": false
+    },
+    {
+        "Title": "Chasing Coral",
+        "Description": "Chasing Coral tracks the worldwide disappearance of coral, a crucial ecosystem for sustaining marine life. It’s another inconvenient truth that coral could be completely wiped out in 30 years by climate change. Chasing Coral is a journey taken by a team of researchers seeking to document the bleaching of coral in warming seas.",
+        "Genre": {
+            "Name": "Documentary",
+            "Description": "A documentary is a non-fictional motion-picture intended to document reality, primarily for the purposes of instruction, education or maintaining a historical record."
+        },
+        "Director": {
+            "Name": "Jeff Orlowski",
+            "Bio": "Jeff Orlowski is an American filmmaker.He was born and raised in Staten Island, New York, USA. He studied anthropology at Stanford University and joined Extreme Ice Survey by James Balog in his senior year at Standford. He started as the team's videographer, and went to directing the documentary Chasing Ice. He received an Emmy Award for it. He is also known for directing 'Chasing Coral' and 'The Social Dilemma'.",
+            "Birth": 1984.0,
             "Death": 0
         },
         "ImageURL": "https://i.picsum.photos/id/1002/200/300.jpg?hmac=QAnT71VGihaxEf_iyet9i7yb3JvYTzeojsx-djd3Aos",
