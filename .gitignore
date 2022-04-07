@@ -1,3 +1,5 @@
 .idea
 node_modules
 not_public
+/mongoDB_database/
+scratch database.js
