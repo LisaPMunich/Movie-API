@@ -261,3 +261,8 @@
 ::1 - - [08/Apr/2022:15:37:27 +0000] "GET /movies/genre/Science-fiction HTTP/1.1" 200 449 "-" "PostmanRuntime/7.29.0"
 ::1 - - [08/Apr/2022:15:47:15 +0000] "GET /movies/genre/Science-fiction HTTP/1.1" 200 449 "-" "PostmanRuntime/7.29.0"
 ::1 - - [08/Apr/2022:16:23:05 +0000] "GET /movies/genre/Science-fiction HTTP/1.1" 304 - "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36"
+::1 - - [08/Apr/2022:16:37:53 +0000] "GET /users HTTP/1.1" 404 144 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36"
+::1 - - [08/Apr/2022:16:38:03 +0000] "GET /users/Tom/movies HTTP/1.1" 404 155 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36"
+::1 - - [08/Apr/2022:16:38:10 +0000] "GET /users/Tom/movies/Downsizing HTTP/1.1" 404 166 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36"
+::1 - - [08/Apr/2022:16:38:16 +0000] "GET /users/ HTTP/1.1" 404 145 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36"
+::1 - - [08/Apr/2022:16:38:27 +0000] "GET /movies HTTP/1.1" 200 14267 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36"

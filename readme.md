@@ -41,3 +41,7 @@ This API allows a user to receive information on movies, directors, and genres s
 <img src="https://user-images.githubusercontent.com/99111208/162483322-147bb2e2-1e4d-4554-b909-d1987091a02a.png" alt="Swagger documentation detail1">
 
 <img src="https://user-images.githubusercontent.com/99111208/162483324-7accde1e-e3a1-43c1-9212-56eb33dd10ce.png" alt="Swagger documentation detail2">
+
+* REST API and MongoDB database successfully connected!
+
+<img src="https://user-images.githubusercontent.com/99111208/162485245-b15d95e7-3edc-419c-b72b-1e76dff4b165.png" alt="browser view">
