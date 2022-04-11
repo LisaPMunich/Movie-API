@@ -45,3 +45,7 @@ This API allows a user to receive information on movies, directors, and genres s
 * REST API and MongoDB database successfully connected!
 
 <img src="https://user-images.githubusercontent.com/99111208/162485245-b15d95e7-3edc-419c-b72b-1e76dff4b165.png" alt="browser view">
+
+### Authentication in Node.js/Express using Passport
+* Implement basic HTTP authentication for initial login requests
+* implement JWT authentication for future requests to API
