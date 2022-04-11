@@ -8,6 +8,14 @@ info:
   title: Express API for Movies and Users
   version: 1.0.0
 paths:
+  /login:
+    post:
+      summary: Login for user with HTTP authentication
+      tags:
+        - login
+      responses:
+        '400':
+          description: bad request, credentials do not match.
   /users:
     post:
       summary: Create and add a new user.
@@ -45,9 +53,9 @@ paths:
                       description: Id of a favorite movie
                       example: 624e9ae5122deed3780f1f66
                   _id:
-                      type: integer
-                      description: The user ID.
-                      example: 623rrd1cbb04432b23ef7543
+                    type: integer
+                    description: The user ID.
+                    example: 623rrd1cbb04432b23ef7543
         '400':
           description: bad request, user name is required.
         '409':
@@ -344,9 +352,10 @@ paths:
                     type: string
                     description: password of user.
                     example: hufflepuff345
-                  birthday: string
+                  birthday:
+                    type: string
                     description: birthday of user.
-                    example: 1981-02-09
+                    example: 1981-02-04
                   favoriteMovies:
                     type: array
                     description: List of the user's favorite movies.
@@ -373,6 +382,8 @@ paths:
           description: bad request, user was not found.
 components: {}
 tags:
+  - name: login
+    description: all endpoints regarding site login and authentication
   - name: users
     description: all endpoints regarding users of movie
   - name: movies
