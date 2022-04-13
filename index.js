@@ -81,7 +81,7 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false})
 
 
 // CUSTOM ERROR FUNCTION
-app.use((err, req, res) => {
+app.use((err, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something is broken!');
 });
