@@ -50,10 +50,8 @@ require('./passport');
 app.post('/login', handleLogin);
 
 
-// // DEFAULT TEXT RESPONSE AT /
-app.get('/', (req, res) => {
-    res.send('Welcome to my Movie API')
-});
+// DEFAULT RESPONSE AT /
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 // QUERIES TO USER ENDPOINTS

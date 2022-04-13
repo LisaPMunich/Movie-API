@@ -4,8 +4,8 @@ info:
     This API allows a user to receive information on climate movies and
     directors so that he can learn more about movies he has watched or is
     interested in. Also he can create a profile, so he can save data about his
-    favorite movies.
-  title: Express API for Movies and Users
+    favorite movies. The user can use the following endpoints to navigate through the application:
+  title: Welcome to my Express API for Movies and Users!
   version: 1.0.0
 paths:
   /login:
