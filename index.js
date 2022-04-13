@@ -9,8 +9,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const handleLogin = require("./auth");
 const {handlePostUsers, handlePostUserMoviesByTitle, handleDeleteUserMovieByTitle, handlePutUserByName,
-    handleDeleteUserByName, validatePostUsers, validatePutUserByName, validateUserBody
-} = require("./users");
+    handleDeleteUserByName, validateUserBody} = require("./users");
 const {handleGetMovies, handleGetMovieByTitle, handleGetGenreByName, handleGetDirectorByName} = require("./movies");
 
 
@@ -38,18 +37,7 @@ app.use(bodyParser.json());
 
 
 // CORS MIDDLEWARE (SELECTION OF ALLOWED ORIGINS)
-let allowedOrigins = ['http://localhost:8080'];
-
-app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) === -1) {
-            let message = 'The CORS policy for this application does not allow access from origin ' + origin;
-            return callback(new Error(message), false);
-        }
-        return callback(null, true);
-    }
-}));
+app.use(cors());
 
 
 // PASSPORT

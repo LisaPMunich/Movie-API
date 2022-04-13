@@ -6,14 +6,12 @@ const {check, validationResult} = require('express-validator');
 
 // VALIDATE INPUT TO USER BODY
 const validateUserBody = [
-    check('Name', 'Username is required.').not.isEmpty(),
+    check('Name', 'Username is required.').not().isEmpty(),
     check('Name', 'Username has to contain at least 5 characters.').isLength({min: 5}),
-    check('Name', 'Username contains non alphanumeric characters. Not allowed.')
-        .isAlphanumeric()
-        .not().isJSON(),
+    check('Name', 'Username contains non alphanumeric characters. Not allowed.').isAlphanumeric(),
     check('Password', 'Password is required.').not().isEmpty(),
     check('Password', 'Password has to contain at least 5 characters').isLength({min: 5}),
-    check('Email', 'That is not valid email address').isEmail(),
+    check('Email', 'That is not a valid email address').isEmail(),
     check('Birthday', 'The required format is YYYY-MM-DD').isISO8601().toDate(),
 ];
 
