@@ -51,9 +51,9 @@ app.post('/login', handleLogin);
 
 
 // // DEFAULT TEXT RESPONSE AT /
-// app.get('/', (req, res) => {
-//     res.send('Welcome to my Movie API')
-// });
+app.get('/', (req, res) => {
+    res.send('Welcome to my Movie API')
+});
 
 
 // QUERIES TO USER ENDPOINTS
@@ -81,8 +81,8 @@ app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false})
 
 
 // CUSTOM ERROR FUNCTION
-app.use((err, res, next) => {
-    console.error(err.stack);
+app.use((err, request, res, next) => {
+    console.error(err);
     res.status(500).send('Something is broken!');
 });
 
