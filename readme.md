@@ -48,4 +48,19 @@ This API allows a user to receive information on movies, directors, and genres s
 
 ### Authentication in Node.js/Express using Passport
 * Implement basic HTTP authentication for initial login requests
-* implement JWT authentication for future requests to API
+* implement login query with generation of JWT token, see screenshot below demonstration working endpoint in Postman:
+
+<img src="https://user-images.githubusercontent.com/99111208/162905239-a86a61ae-ff22-4410-8c8e-4a397dbf5436.png" alt="Screenshot Postman with POST endpoint for login">
+
+* Update Swagger documentation
+
+<img src="https://user-images.githubusercontent.com/99111208/162905204-e4b60cd9-b123-4f71-9ce1-197a0d6c074e.png" alt="Screenshot Swagger documentation updated">
+
+# Data Security 
+
+### Implement CORS in Express
+
+### Hashing: implement bcrypt
+
+
+

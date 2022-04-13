@@ -1,16 +1,34 @@
 const Models = require("./models");
 const Users = Models.User;
 const Movies = Models.Movie;
+const {check, validationResult} = require('express-validator');
+
+
+// VALIDATE INPUT TO USER BODY
+const validateUserBody = [
+    check('Name', 'Username is required.').not.isEmpty(),
+    check('Name', 'Username has to contain at least 5 characters.').isLength({min: 5}),
+    check('Name', 'Username contains non alphanumeric characters. Not allowed.')
+        .isAlphanumeric()
+        .not().isJSON(),
+    check('Password', 'Password is required.').not().isEmpty(),
+    check('Password', 'Password has to contain at least 5 characters').isLength({min: 5}),
+    check('Email', 'That is not valid email address').isEmail(),
+    check('Birthday', 'The required format is YYYY-MM-DD').isISO8601().toDate(),
+];
 
 
 // CREATE - Create and add new user
 function handlePostUsers() {
     return (req, res) => {
-        const name = req.body.Name;
-        if (name === '') {
-            res.status(400).send('user name is required')
-            return;
+        let errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({
+                success: false,
+                errors: errors.array()
+            });
         }
+        let hashedPassword = Users.hashPassword(req.body.Password);
         Users.findOne({Name: req.body.Name})
             .then((user) => {
                 if (user) {
@@ -19,7 +37,7 @@ function handlePostUsers() {
                     Users
                         .create({
                             Name: req.body.Name,
-                            Password: req.body.Password,
+                            Password: hashedPassword,
                             Email: req.body.Email,
                             Birthday: req.body.Birthday
                         })
@@ -38,6 +56,7 @@ function handlePostUsers() {
             });
     };
 }
+
 
 // CREATE AND DELETE ROUTES - Add and delete favorite movies from user by movie title
 function handlePostUserMoviesByTitle() {
@@ -126,9 +145,17 @@ function handleDeleteUserMovieByTitle() {
     };
 }
 
-// UPDATE AND DELETE ROUTES - Update and remove user info by username
+
+// UPDATE AND REMOVE ROUTES - Update and remove user info by username
 function handlePutUserByName() {
     return (req, res) => {
+        let errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({
+                success: false,
+                errors: errors.array()
+            });
+        }
         Users.findOneAndUpdate(
             {Name: req.params.Name},
             {
@@ -169,4 +196,12 @@ function handleDeleteUserByName() {
     };
 }
 
-module.exports = {handlePostUsers, handlePostUserMoviesByTitle, handleDeleteUserMovieByTitle, handlePutUserByName, handleDeleteUserByName};
+
+module.exports = {
+    validateUserBody,
+    handlePostUsers,
+    handlePostUserMoviesByTitle,
+    handleDeleteUserMovieByTitle,
+    handlePutUserByName,
+    handleDeleteUserByName
+};

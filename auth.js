@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken'),
 
 require('./passport'); // My local passport file
 
+
 let generateJWTToken = (user) => {
     return jwt.sign(user, jwtSecret, {
         subject: user.Name,
@@ -12,6 +13,7 @@ let generateJWTToken = (user) => {
     });
 }
 
+// CREATE User Login
 function handleLogin(req, res) {
     passport.authenticate('local', {session: false}, (error, user, info) => {
         if (error || !user) {

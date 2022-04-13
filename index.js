@@ -6,15 +6,16 @@ let path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const handleLogin = require("./auth");
 const {handlePostUsers, handlePostUserMoviesByTitle, handleDeleteUserMovieByTitle, handlePutUserByName,
-    handleDeleteUserByName
+    handleDeleteUserByName, validatePostUsers, validatePutUserByName, validateUserBody
 } = require("./users");
 const {handleGetMovies, handleGetMovieByTitle, handleGetGenreByName, handleGetDirectorByName} = require("./movies");
 
 
 const app = express();
-const PORT = 8080;
+const port = process.env.PORT || 8080;
 
 
 
@@ -36,6 +37,21 @@ app.use('/documentation.html', swaggerUi.serve, swaggerUi.setup(swaggerDocument)
 app.use(bodyParser.json());
 
 
+// CORS MIDDLEWARE (SELECTION OF ALLOWED ORIGINS)
+let allowedOrigins = ['http://localhost:8080'];
+
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            let message = 'The CORS policy for this application does not allow access from origin ' + origin;
+            return callback(new Error(message), false);
+        }
+        return callback(null, true);
+    }
+}));
+
+
 // PASSPORT
 const passport = require('passport');
 require('./passport');
@@ -51,8 +67,8 @@ app.get('/', (req, res) => {
 });
 
 
-// USER ENDPOINTS
-app.post('/users', handlePostUsers());
+// QUERIES TO USER ENDPOINTS
+app.post('/users', validateUserBody, handlePostUsers());
 
 app
     .route('/users/:Name/movies/:Title')
@@ -61,11 +77,11 @@ app
 
 app
     .route('/users/:Name')
-    .put(passport.authenticate('jwt', {session: false}), handlePutUserByName())
+    .put(passport.authenticate('jwt', {session: false}), validateUserBody,handlePutUserByName())
     .delete(passport.authenticate('jwt', {session: false}), handleDeleteUserByName());
 
 
-// MOVIE ENDPOINTS
+// QUERIES TO MOVIE ENDPOINTS
 app.get('/movies', passport.authenticate('jwt', {session: false}), handleGetMovies());
 
 app.get('/movies/:Title', passport.authenticate('jwt', {session: false}), handleGetMovieByTitle());
@@ -83,8 +99,9 @@ app.use((err, req, res) => {
 
 
 // LISTEN FOR REQUESTS
-app.listen(PORT, () => {
-    console.log(`The server is running on port ${PORT}!`)
+app.listen(port, '0.0.0.0',() => {
+    console.log('Listening on Port ' + port);
 });
+
 
 
