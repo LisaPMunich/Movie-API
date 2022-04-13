@@ -19,7 +19,7 @@ const port = process.env.PORT || 8080;
 
 
 // CONNECT DATABASE AND REST API
-mongoose.connect('mongodb://localhost:27017/test', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('process.env.CONNECTION_URI', {useNewUrlParser: true, useUnifiedTopology: true});
 
 
 // LOGGING
@@ -93,3 +93,4 @@ app.listen(port, '0.0.0.0',() => {
 
 
 
+mongoimport --uri mongodb+srv://LisaPMunich:tjy8nuqQNA4uqj2fte@lisapmunich.jjs7b.mongodb.net/// movieDB --collection movies --type json --file mongoDB_database/movies.json
