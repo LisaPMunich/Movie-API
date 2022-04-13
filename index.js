@@ -15,11 +15,12 @@ const {handleGetMovies, handleGetMovieByTitle, handleGetGenreByName, handleGetDi
 
 const app = express();
 const port = process.env.PORT || 8080;
+const dsnConnection = process.env.CONNECTION_URI || 'mongodb://localhost:27017/test';
 
 
 
 // CONNECT DATABASE AND REST API
-mongoose.connect('process.env.CONNECTION_URI', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(dsnConnection, {useNewUrlParser: true, useUnifiedTopology: true});
 
 
 // LOGGING
