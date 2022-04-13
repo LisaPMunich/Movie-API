@@ -90,7 +90,3 @@ app.use((err, req, res) => {
 app.listen(port, '0.0.0.0',() => {
     console.log('Listening on Port ' + port);
 });
-
-
-
-mongoimport --uri mongodb+srv://LisaPMunich:tjy8nuqQNA4uqj2fte@lisapmunich.jjs7b.mongodb.net/// movieDB --collection movies --type json --file mongoDB_database/movies.json
