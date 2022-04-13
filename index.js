@@ -49,10 +49,10 @@ require('./passport');
 app.post('/login', handleLogin);
 
 
-// DEFAULT TEXT RESPONSE AT /
-app.get('/', (req, res) => {
-    res.send('Welcome to my Movie API')
-});
+// // DEFAULT TEXT RESPONSE AT /
+// app.get('/', (req, res) => {
+//     res.send('Welcome to my Movie API')
+// });
 
 
 // QUERIES TO USER ENDPOINTS
