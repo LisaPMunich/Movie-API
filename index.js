@@ -53,7 +53,7 @@ app.post('/login', handleLogin);
 // DEFAULT RESPONSE AT /
 app.get('/', (req, res) => {
     res.send('Welcome to my Movie API!')
-};
+});
 
 
 // QUERIES TO USER ENDPOINTS
