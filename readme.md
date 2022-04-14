@@ -41,8 +41,16 @@ This RESTful movie API combines backend (express, nodejs , mongodb) and frontend
 
 <img src="https://user-images.githubusercontent.com/99111208/161479123-1471ab5a-6256-4c1b-99df-41e9ce3c004c.png" alt="swagger documentation">
 
-### Non-relational database MongoDB: Building the database
+### Installation of all dev dependencies and express middleware for development
 
+See the dependencies listed in the package.json:
+
+<img src="https://user-images.githubusercontent.com/99111208/163407526-030def0e-1628-4f60-b5ed-9764be80939e.png" alt="package json displaying dependencies">
+
+### Create and populate non-relational database MongoDB
+
+* use database schema diagram to sketch structure of database, division into two collections ("movies" and "users").
+* installing mongo shell
 * use Mongo Shell to create database with CRUD operations
 * Create the 2 collections "movies" and "users".
 * Add 10 documents to the "movies" collection (including embedded documents for the keys "genre" and "director").
@@ -50,12 +58,18 @@ This RESTful movie API combines backend (express, nodejs , mongodb) and frontend
 
 ### Building models with Mongoose (Business Logic)
 
-* Defining the Schema
-* Creation of the Models
-* Exporting the Models
+Use Mongoose to build the Business Logic Layer linking the database from MongoDB to the server (and finally to the Web Browser).
+
+Process:
+* Installation of object model driver Mongoose
+* Installation of dependencies: jsonwebtoken (jwt), bcrypt
+* Configuring the schemata for the users and the movies collection
+* Creation of the Models in a separate models.js file
+* Exporting the models to index.js
+* Rewriting the CRUD operations to query the mongoose models
 * Integrating Mongoose with the REST API
-* Rewriting the CRUD operations, fill in each request method with the Mongoose logic to make the request methods functional
-* test the endpoints in Postman
+* Apply local and jwt authentication methods
+* Test the endpoints in Postman
 
 <img src="https://user-images.githubusercontent.com/99111208/162483313-eeab363f-be89-4493-a05f-f1abfe9896f3.png" alt="Postman documentation">
 
@@ -66,10 +80,6 @@ This RESTful movie API combines backend (express, nodejs , mongodb) and frontend
 <img src="https://user-images.githubusercontent.com/99111208/162483322-147bb2e2-1e4d-4554-b909-d1987091a02a.png" alt="Swagger documentation detail1">
 
 <img src="https://user-images.githubusercontent.com/99111208/162483324-7accde1e-e3a1-43c1-9212-56eb33dd10ce.png" alt="Swagger documentation detail2">
-
-* REST API and MongoDB database successfully connected!
-
-<img src="https://user-images.githubusercontent.com/99111208/162485245-b15d95e7-3edc-419c-b72b-1e76dff4b165.png" alt="browser view">
 
 ## Data Security
 
@@ -101,27 +111,24 @@ This RESTful movie API combines backend (express, nodejs , mongodb) and frontend
 
 <img src="https://user-images.githubusercontent.com/99111208/163313342-ecbf4ff4-de6e-47c9-85e3-755742e8c9c7.png" alt="Screenshot adjusting environment variable in code">
 
-### Upload Local Database to MongoDB Atlas -via mongo import
 
+## Hosting on MongoDBAtlas (DBaaS) and HEROKU (PaaS)
 
-## Process of Hosting on HEROKU (PaaS)
-
-### First Steps
+### Steps
 
 * register with heroku, install toolbelt
 * change port
 * create Heroku app
+* create mongodb instance on MongoDBAtlas
+* export MongoDB database with mongodump (each collection as json, without commas between documents, not arrays)
 * push Git main to Heroku
 
-### Troubleshooting of deployment process
+### Troubleshooting of deployment process to HEROKU
 
-  * H10 Syntax Error Object Compilation --> Solutions: 
-  * add version of node.js (16.14.2) to package.json,
-  * change HEROKU version from 20 to 18
-  * remove programming/ code errors:
-    * remove single quotes from mongoose connection string process.env.CONNECTION_URI, 
-    * remove scratch shell command from IDE (still left from deployment)
-    * fix parameters of custom error handler (have to be 4, not 3)
+* add version of node.js (16.14.2) to package.json,
+* change HEROKU version from 20 to 18
+* remove programming/ code errors (reference HEROKU documentation)
+
     
 ## Deployment to HEROKU - FINALLY
 
