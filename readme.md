@@ -4,26 +4,26 @@ This API allows a user to receive information on movies, directors, and genres s
 
 ## The Development process
 
-## Creating HTTP requests and testing the endpoints
+### Creating HTTP requests and testing the endpoints
 
 **Postman: Testing of endpoints**
 
 <img src="https://user-images.githubusercontent.com/99111208/161479118-6014200c-aa61-4424-ba93-948936617e51.png" alt="Postman Testing">
 
-## Documentation
+### Documentation
 
 **Swagger: Writing documentation of endpoints**
 
 <img src="https://user-images.githubusercontent.com/99111208/161479123-1471ab5a-6256-4c1b-99df-41e9ce3c004c.png" alt="swagger documentation">
 
-## Non-relational database MongoDB: Building the database
+### Non-relational database MongoDB: Building the database
 
 * use Mongo Shell to create database with CRUD operations
 * Create the 2 collections "movies" and "users".
 * Add 10 documents to the "movies" collection (including embedded documents for the keys "genre" and "director").
 * In the "users" collection - consisting of 4 documents - references are used to store information about the user's favorite movies.
 
-## Building models with Mongoose (Business Logic)
+### Building models with Mongoose (Business Logic)
 
 * Defining the Schema
 * Creation of the Models
@@ -46,7 +46,9 @@ This API allows a user to receive information on movies, directors, and genres s
 
 <img src="https://user-images.githubusercontent.com/99111208/162485245-b15d95e7-3edc-419c-b72b-1e76dff4b165.png" alt="browser view">
 
-## Authentication in Node.js/Express using Passport
+## Data Security
+
+### Authentication in Node.js/Express using Passport
 
 * Implement basic HTTP authentication for initial login requests
 * implement login query with generation of JWT token, see screenshot below demonstration working endpoint in Postman:
@@ -57,7 +59,7 @@ This API allows a user to receive information on movies, directors, and genres s
 
 <img src="https://user-images.githubusercontent.com/99111208/162905204-e4b60cd9-b123-4f71-9ce1-197a0d6c074e.png" alt="Screenshot Swagger documentation updated">
 
-## Data Security - Implementation of Security Measures for Backend
+### Implementation of Security Measures for Backend
 
 * CORS in Express (set to allow for all origins)
 * Bcrypt for Password hashing (see screenshot)
@@ -74,9 +76,7 @@ This API allows a user to receive information on movies, directors, and genres s
 
 <img src="https://user-images.githubusercontent.com/99111208/163313342-ecbf4ff4-de6e-47c9-85e3-755742e8c9c7.png" alt="Screenshot adjusting environment variable in code">
 
-## Upload Local Database to MongoDB Atlas
-
-###via mongo import
+### Upload Local Database to MongoDB Atlas -via mongo import
 
 
 ## Process of Hosting on HEROKU (PaaS)
