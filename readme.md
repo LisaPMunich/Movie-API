@@ -1,10 +1,35 @@
 # Movie-API
 
-This API allows a user to receive information on movies, directors, and genres so that he can learn more about movies he has watched or is interested in. Also he can create a profile, so he can save data about his favorite movies.
+## Objective
 
-## The Development process
+This RESTful movie API combines backend (express, nodejs , mongodb) and frontend (react). It allows a users to access a database to receive information on movies dealing with the topic of climate change. Also, the user can get background information on the movies such as information about the movies' directors and genre specifications. The user can sign up, update personal information and save/delete favorite movies to/from his personal profile.
 
-### Creating HTTP requests and testing the endpoints
+## User Stories
+
+* "As a user, I want to be able to receive information on movies, directors, and genres so that I can learn more about movies I’ve watched or am interested in."
+* "As a user, I want to be able to create a profile, so I can save data about my favorite movies."
+
+## Technical Requirements (according to project brief)
+
+* MongoDB
+* node.js, usage of package.json
+* Express
+* RESTful architecture
+* usage of at least three middleware modules
+* database: built with MongoDB
+* business logic layer: modeled with Mongoose
+* API return movies in JSON
+* no code-errors
+* testing in Postman
+* security measures: code for user authentication, user authorization, data validation, meet data security regulations (GDPO)
+* Deployment on GitHub
+* Deployment on Heroku
+
+## Creation of Server-Side Components of API - Development Process
+
+### Installation of node.js and express
+
+### Creation of HTTP endpoints and route handlers with subsequent testing in Postman
 
 **Postman: Testing of endpoints**
 
