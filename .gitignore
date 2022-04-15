@@ -5,3 +5,4 @@ not_public
 scratch database.js
 .DS_Store
 log.txt
+.idea
