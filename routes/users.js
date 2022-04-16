@@ -1,7 +1,11 @@
-const Models = require("./models");
-const Users = Models.User;
-const Movies = Models.Movie;
+const express = require('express');
+
+
 const {check, validationResult} = require('express-validator');
+const passport = require("../middleware/passport");
+const {Users} = require("../models/users.model");
+
+const usersRouter = express.Router();
 
 
 // VALIDATE INPUT TO USER BODY
@@ -14,6 +18,19 @@ const validateUserBody = [
     check('Email', 'That is not a valid email address').isEmail(),
     check('Birthday', 'The required format is YYYY-MM-DD').isISO8601().toDate(),
 ];
+
+
+usersRouter.post('/users', validateUserBody, handlePostUsers());
+
+usersRouter
+    .route('/users/:Name/movies/:Title')
+    .post(passport.authenticate('jwt', {session: false}), handlePostUserMoviesByTitle())
+    .delete(passport.authenticate('jwt', {session: false}), handleDeleteUserMovieByTitle());
+
+usersRouter
+    .route('/users/:Name')
+    .put(passport.authenticate('jwt', {session: false}), validateUserBody,handlePutUserByName())
+    .delete(passport.authenticate('jwt', {session: false}), handleDeleteUserByName());
 
 
 // CREATE - Create and add new user
@@ -196,10 +213,6 @@ function handleDeleteUserByName() {
 
 
 module.exports = {
+    usersRouter,
     validateUserBody,
-    handlePostUsers,
-    handlePostUserMoviesByTitle,
-    handleDeleteUserMovieByTitle,
-    handlePutUserByName,
-    handleDeleteUserByName
 };

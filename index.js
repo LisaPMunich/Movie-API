@@ -7,11 +7,10 @@ const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const handleLogin = require("./auth");
-const {handlePostUsers, handlePostUserMoviesByTitle, handleDeleteUserMovieByTitle, handlePutUserByName,
-    handleDeleteUserByName, validateUserBody} = require("./users");
-const {handleGetMovies, handleGetMovieByTitle, handleGetGenreByName, handleGetDirectorByName} = require("./movies");
 
+const {loginRouter} = require("./routes/login");
+const {moviesRouter} = require("./routes/movies");
+const {usersRouter} = require("./routes/users");
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -24,12 +23,12 @@ mongoose.connect(dsnConnection, {useNewUrlParser: true, useUnifiedTopology: true
 
 
 // LOGGING
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
+const accessLogStream = fs.createWriteStream(path.join(__dirname, './middleware/log.txt'), {flags: 'a'});
 app.use(morgan('combined', {stream: accessLogStream}));
 
 
 // DOCUMENTATION
-const swaggerDocument = YAML.load('./swagger.yaml');
+const swaggerDocument = YAML.load('./middleware/swagger.yaml');
 app.use('/documentation.html', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
@@ -42,42 +41,17 @@ app.use(cors());
 
 
 // PASSPORT
-const passport = require('passport');
-require('./passport');
+require('./middleware/passport');
 
 
-// AUTHENTICATION
-app.post('/login', handleLogin);
-
-
-// DEFAULT RESPONSE AT /
+// ROUTES
 app.get('/', (req, res) => {
     res.send('Welcome to my Movie API!')
 });
 
-
-// QUERIES TO USER ENDPOINTS
-app.post('/users', validateUserBody, handlePostUsers());
-
-app
-    .route('/users/:Name/movies/:Title')
-    .post(passport.authenticate('jwt', {session: false}), handlePostUserMoviesByTitle())
-    .delete(passport.authenticate('jwt', {session: false}), handleDeleteUserMovieByTitle());
-
-app
-    .route('/users/:Name')
-    .put(passport.authenticate('jwt', {session: false}), validateUserBody,handlePutUserByName())
-    .delete(passport.authenticate('jwt', {session: false}), handleDeleteUserByName());
-
-
-// QUERIES TO MOVIE ENDPOINTS
-app.get('/movies', passport.authenticate('jwt', {session: false}), handleGetMovies());
-
-app.get('/movies/:Title', passport.authenticate('jwt', {session: false}), handleGetMovieByTitle());
-
-app.get('/movies/genre/:Name', passport.authenticate('jwt', {session: false}), handleGetGenreByName());
-
-app.get('/movies/director/:Name', passport.authenticate('jwt', {session: false}), handleGetDirectorByName());
+app.use(loginRouter);
+app.use(moviesRouter);
+app.use(usersRouter);
 
 
 // CUSTOM ERROR FUNCTION

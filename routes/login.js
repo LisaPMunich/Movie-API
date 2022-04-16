@@ -1,9 +1,13 @@
+const express = require('express');
+
 const jwtSecret = 'your_jwt_secret';
 const jwt = require('jsonwebtoken'),
     passport = require('passport');
+require('../middleware/passport');
 
-require('./passport'); // My local passport file
+const loginRouter = express.Router();
 
+loginRouter.post('/login', handleLogin);
 
 let generateJWTToken = (user) => {
     return jwt.sign(user, jwtSecret, {
@@ -13,7 +17,6 @@ let generateJWTToken = (user) => {
     });
 }
 
-// CREATE User Login
 function handleLogin(req, res) {
     passport.authenticate('local', {session: false}, (error, user, info) => {
         if (error || !user) {
@@ -32,5 +35,7 @@ function handleLogin(req, res) {
     })(req, res);
 }
 
-// POST LOGIN
-module.exports = handleLogin;
+
+module.exports = {
+    loginRouter,
+    };

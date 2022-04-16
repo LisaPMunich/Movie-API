@@ -1,6 +1,19 @@
+const express = require('express');
 
-const Models = require("./models");
-const Movies = Models.Movie;
+const passport = require("../middleware/passport");
+const {Movies} = require("../models/movies.model");
+
+const moviesRouter = express.Router();
+
+
+moviesRouter.get('/movies', passport.authenticate('jwt', {session: false}), handleGetMovies());
+
+moviesRouter.get('/movies/:Title', passport.authenticate('jwt', {session: false}), handleGetMovieByTitle());
+
+moviesRouter.get('/movies/genre/:Name', passport.authenticate('jwt', {session: false}), handleGetGenreByName());
+
+moviesRouter.get('/movies/director/:Name', passport.authenticate('jwt', {session: false}), handleGetDirectorByName());
+
 
 // READ - Get movie
 function handleGetMovies() {
@@ -58,4 +71,4 @@ function handleGetDirectorByName() {
     };
 }
 
-module.exports = {handleGetMovies, handleGetMovieByTitle, handleGetGenreByName, handleGetDirectorByName};
+module.exports = {moviesRouter};

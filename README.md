@@ -1,13 +1,60 @@
 # Movie-API
 
-## Objective
+## Description
 
-This RESTful movie API combines backend (express, nodejs , mongodb) and frontend (react). It allows a users to access a database to receive information on movies dealing with the topic of climate change. Also, the user can get background information on the movies such as information about the movies' directors and genre specifications. The user can sign up, update personal information and save/delete favorite movies to/from his personal profile.
+I developed this Movie_Api as part of my Full-Stack Web Development Course at CareerFoundry. 
 
-## User Stories
+### What technology usage and why?
 
-* "As a user, I want to be able to receive information on movies, directors, and genres so that I can learn more about movies I’ve watched or am interested in."
-* "As a user, I want to be able to create a profile, so I can save data about my favorite movies."
+This RESTful movie API combines backend (express, nodejs , mongodb) and frontend (react) and allowed me to get hands-on experience with the MERN stack. I chose this specific stack, because I had prior knowledge of JavaScript and using node.js and React would therefore be the best choice to combine backend and frontend.
+
+### What does this application do?
+
+This API allows a users to access a database to receive information on movies dealing with the topic of climate change. Also, the user can get background information on the movies such as information about the movies' directors and genre specifications. The user can sign up, update personal information and save/delete favorite movies to/from his personal profile.
+
+### What challenges did I face, what did I learn? 
+
+Being a beginner I obviously learned a lot from implementing this API. The most important learnings are:
+* when working with multiple routes and endpoints, it is necessary to organize your project files (e.g. routes, models, middleware) and do division of concerns (use express.Router), summarize routes (via route chaining) and extract data to a separate file (extraction method on handlers) as much as possible. Otherwise, the index.js gets blown out of proportion.
+* installing nodemon and an express error handler is very useful during development. Both save time.
+* I am not sure, if Swagger is the best documentation software. Indentation and syntax errors are hard to spot and fix, a great amount of time goes into fulfilling YAML requirements for formatting.
+* Visualizing the database in form of a schema before starting to fill it with content. Thus, inconsistencies become apparent right at the start and that avoids later extensive and error-prone refactoring.
+* I used the non-relational database MongoDB, which doesn't have a predefined schema like postgreSQL. Though given the flexibility to omit certain keys, where unnecessary, I still stuck to a unified document-structure in order to avoid the side effect of messy, mismatched data and to not confuse the final user.
+* Since I could not use primary and foreign keys - as I would have done in a relational database - I decided on using references (here: favorite movies of a user) to avoid redundant data.
+* Before installing Homebrew (on a Mac) in order to use MongoDB, make sure to fulfill the system requirements for homebrew (https://docs.brew.sh/Installation). Otherwise, this can paralyze your progress for a day.
+* when uploading data to HEROKU, it was necessary to use a format without a wrapping array and no commas between documents.
+* when deploying to HEROKU the version of node.js should be 16.14.2, not higher. And also the binaries of the node.js and npm versions should match up. I specified the matching versions in the package.json.
+
+
+## How to install and run the project ...
+
+### ... as a developer, who wants to work with the project
+1. Clone or download repository ...
+```bash
+git clone https://github.com/LisaPMunich/Movie-API.git
+```
+
+
+<img src="https://user-images.githubusercontent.com/99111208/163665039-d0a6011c-acff-4b35-97ec-7978a461c86d.png" alt="screenshot cloning or download">
+
+
+3. install mongodb
+```bash
+npm install mongodb
+```
+
+4. Connect with own MongoDB (local or external)
+define CONNECTION_URI as environment variable, otherwise it will connect to mongodb://localhost:27017/test
+
+
+5. start the server
+```bash
+npm run start
+```
+
+### ... as a movie enthusiast, who wants to see the movies 
+In order to use the application you have to register as a user at https://young-fjord-17804.herokuapp.com/users and then
+https://young-fjord-17804.herokuapp.com/login to get the jwt token.
 
 ## Technical Requirements (according to project brief)
 
@@ -25,7 +72,13 @@ This RESTful movie API combines backend (express, nodejs , mongodb) and frontend
 * Deployment on GitHub
 * Deployment on Heroku
 
-## Creation of Server-Side Components of API - Development Process
+### Project File Structure
+
+Here is a quick breakdown of the project structure, in order to understand what part of the project I am referring to in the description of the following steps.
+
+<img src="https://user-images.githubusercontent.com/99111208/163660927-d731ff61-d3ff-48ea-8ec5-f175c4b22292.png" alt="project file structure">
+
+## Part I: Development Process of the Server-Side
 
 ### Installation of node.js and express
 
@@ -128,8 +181,8 @@ Process:
 * add version of node.js (16.14.2) to package.json,
 * change HEROKU version from 20 to 18
 * remove programming/ code errors (reference HEROKU documentation)
+ 
 
-    
 ## Deployment to HEROKU - FINALLY
 
 <img src="https://user-images.githubusercontent.com/99111208/163316015-6b1cf16d-9469-4f92-85ee-0957de9e3ab2.png" alt="Screenshot app finally online on Heroku">
