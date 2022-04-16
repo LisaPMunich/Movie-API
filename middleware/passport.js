@@ -1,3 +1,4 @@
+
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const passportJWT = require('passport-jwt');
@@ -42,3 +43,5 @@ passport.use(new JWTStrategy({
             return callback(error)
         });
 }));
+
+module.exports = passport;
