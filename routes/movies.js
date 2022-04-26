@@ -6,7 +6,7 @@ const {Movies} = require("../models/movies.model");
 const moviesRouter = express.Router();
 
 
-moviesRouter.get('/movies', passport.authenticate('jwt', {session: false}), handleGetMovies());
+// moviesRouter.get('/movies', passport.authenticate('jwt', {session: false}), handleGetMovies());
 
 moviesRouter.get('/movies/:Title', passport.authenticate('jwt', {session: false}), handleGetMovieByTitle());
 
