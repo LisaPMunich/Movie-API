@@ -329,7 +329,43 @@ paths:
         description: Name of user to fetch
         required: true
         schema:
-          type: integer
+          type: string
+    get:
+      tags:
+        - users
+      responses:
+        '200':
+          description: user was found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Name:
+                    type: string
+                    description: The user's name.
+                    example: Mona2
+                  Password:
+                    type: string
+                    description: Encrypted password of user.
+                    example: hufflepuff345
+                  Birthday:
+                    type: string
+                    description: birthday of user.
+                    example: 1981-02-04
+                  Email:
+                    type: string
+                    description: email of the user.
+                    example: example@gmail.com
+                  FavoriteMovies:
+                    type: array
+                    description: List of the user's favorite movies.
+                    items:
+                      type: string
+                      description: ID of a favorite movie
+                      example: 624e9ae5122deed3780f1f66
+        '404':
+          description: User not found.
     put:
       summary: Update user information by user Name.
       tags:

@@ -12,7 +12,7 @@ const usersRouter = express.Router();
 const validateUserBody = [
     check('Name', 'Username is required.').not().isEmpty(),
     check('Name', 'Username has to contain at least 5 characters.').isLength({min: 5}),
-    check('Name', 'Username contains non alphanumeric characters. Not allowed.').isAlphanumeric(),
+    // check('Name', 'Username contains non alphanumeric characters. Not allowed.').isAlphanumeric(),
     check('Password', 'Password is required.').not().isEmpty(),
     check('Password', 'Password has to contain at least 5 characters').isLength({min: 5}),
     check('Email', 'That is not a valid email address').isEmail(),
@@ -29,6 +29,7 @@ usersRouter
 
 usersRouter
     .route('/users/:Name')
+    .get(passport.authenticate('jwt', {session:false}), handleGetUserByName())
     .put(passport.authenticate('jwt', {session: false}), validateUserBody,handlePutUserByName())
     .delete(passport.authenticate('jwt', {session: false}), handleDeleteUserByName());
 
@@ -160,6 +161,18 @@ function handleDeleteUserMovieByTitle() {
     };
 }
 
+function handleGetUserByName() {
+    return (req, res) => {
+        Users.findOne({Name: req.params.Name})
+            .then(user => {
+                if (!user) {
+                    res.status(404).send('User not found');
+                    return;
+                }
+                res.status(200).json(user);
+            });
+    };
+}
 
 // UPDATE AND REMOVE ROUTES - Update and remove user info by username
 function handlePutUserByName() {
