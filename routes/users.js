@@ -189,7 +189,7 @@ function handlePutUserByName() {
             {
                 $set: {
                     Name: req.body.Name,
-                    Password: req.body.Password,
+                    Password: Users.hashPassword(req.body.Password),
                     Email: req.body.Email,
                     Birthday: req.body.Birthday
                 },
