@@ -4,6 +4,7 @@ const express = require('express');
 const {check, validationResult} = require('express-validator');
 const passport = require("../middleware/passport");
 const {Users} = require("../models/users.model");
+const {Movies} = require("../models/movies.model");
 
 const usersRouter = express.Router();
 
