@@ -92,7 +92,7 @@ Here is a quick breakdown of the project structure, in order to understand what 
 
 **Swagger: Writing documentation of endpoints**
 
-<img src="https://user-images.githubusercontent.com/99111208/161479123-1471ab5a-6256-4c1b-99df-41e9ce3c004c.png" alt="swagger documentation">
+<img src="https://user-images.githubusercontent.com/99111208/168456198-8d1f2c68-1c29-4783-a275-bb1bae0622a7.png" alt="swagger documentation">
 
 ### Installation of all dev dependencies and express middleware for development
 
