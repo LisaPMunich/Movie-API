@@ -30,7 +30,15 @@ function handlePostUsers() {
         Users.findOne({Name: req.body.Name})
             .then((user) => {
                 if (user) {
-                    res.status(409).send(req.body.Name + ' already exists!');
+                    res.status(409).send({
+                        success: false,
+                        errors: [
+                            {
+                                param: 'Name',
+                                msg: req.body.Name + ' already exists.'
+                            }
+                        ]
+                    });
                 } else {
                     Users
                         .create({
@@ -44,13 +52,29 @@ function handlePostUsers() {
                         })
                         .catch((err) => {
                             console.error(err);
-                            res.status(500).send('Error: ' + err);
+                            res.status(500).send({
+                                success: false,
+                                errors: [
+                                    {
+                                        param: 'Name',
+                                        msg: 'Error: ' + err,
+                                    }
+                                ]
+                            });
                         });
                 }
             })
             .catch((err) => {
                 console.error(err);
-                res.status(500).send('Error: ' + err);
+                res.status(500).send({
+                    success: false,
+                    errors: [
+                        {
+                            param: 'Name',
+                            msg: 'Error: ' + err,
+                        }
+                    ]
+                });
             });
     };
 }
