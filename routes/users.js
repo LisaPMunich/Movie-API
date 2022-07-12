@@ -17,7 +17,7 @@ const validateUserBody = [
     check('Password', 'Password is required.').not().isEmpty(),
     check('Password', 'Password has to contain at least 5 characters').isLength({min: 5}),
     check('Email', 'That is not a valid email address').isEmail(),
-    check('Birthday', 'The required format is YYYY-MM-DD').isISO8601().toDate(),
+    check('Birthday', 'The required format is DD-MM-YYYY').isISO8601().toDate(),
 ];
 
 
@@ -42,14 +42,22 @@ function handlePostUsers() {
         if (!errors.isEmpty()) {
             return res.status(422).json({
                 success: false,
-                errors: errors.array()
+                errors: errors
             });
         }
         let hashedPassword = Users.hashPassword(req.body.Password);
         Users.findOne({Name: req.body.Name})
             .then((user) => {
                 if (user) {
-                    res.status(409).send(req.body.Name + ' already exists!');
+                    res.status(409).send({
+                        success: false,
+                        errors: [
+                            {
+                                param: 'Name',
+                                msg: req.body.Name + ' already exists.'
+                            }
+                        ]
+                    });
                 } else {
                     Users
                         .create({
@@ -63,13 +71,29 @@ function handlePostUsers() {
                         })
                         .catch((err) => {
                             console.error(err);
-                            res.status(500).send('Error: ' + err);
+                            res.status(500).send({
+                                success: false,
+                                errors: [
+                                    {
+                                        param: 'Name',
+                                        msg: 'Error: ' + err,
+                                    }
+                                ]
+                            });
                         });
                 }
             })
             .catch((err) => {
                 console.error(err);
-                res.status(500).send('Error: ' + err);
+                res.status(500).send({
+                    success: false,
+                    errors: [
+                        {
+                            param: 'Name',
+                            msg: 'Error: ' + err,
+                        }
+                    ]
+                });
             });
     };
 }
