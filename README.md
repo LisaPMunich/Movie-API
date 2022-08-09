@@ -1,5 +1,4 @@
 # Movie-API
-![visitor badge](https://visitor-badge.glitch.me/badge?page_id=LisaPMunich.visitor-badge)
 
 ## Description
 
